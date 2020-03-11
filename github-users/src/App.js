@@ -37,30 +37,31 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.users !== this.state.users) {
-      console.log('new users array');
-      if (this.state.searchText !== '') {
-        console.log(this.state.searchText);
+    if ( prevState.users.id !== this.state.users.id ) {
 
-        axios
-        .get(`https://api.github.com/users/${this.state.searchText}`)
-        .then(res => {
-          this.setState({
-            users: res.data
-          });
-        })
-        .catch(err => console.log(err.message));
+      axios
+      .get(`https://api.github.com/users/${this.state.searchText}`)
+      .then(res => {
+        this.setState({
+          users: res.data
+        });
+      })
+      .catch(err => console.log(err.message));
 
-        axios
-        .get(`https://api.github.com/users/${this.state.searchText}/followers`)
-        .then(res => {
-          this.setState({
-            followers: res.data
-          });
-        })
-        .catch(err => console.log(err));
-      }
+      axios
+      .get(`https://api.github.com/users/${this.state.searchText}/followers`)
+      .then(res => {
+        this.setState({
+          followers: res.data
+        });
+      })
+      .catch(err => console.log(err));
+      
     }
+
+    console.log("prevState user:", prevState.users);
+    console.log("this state users", this.state.users);
+
   }
 
   handleChanges = e => {
