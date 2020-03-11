@@ -10,3 +10,8 @@
 h1 {
   margin-bottom: 30px;
 }
+
+.bio-info {
+  text-align: left;
+  padding-left: 10px;
+}
