@@ -15,30 +15,50 @@ class App extends React.Component {
   };
 
   componentDidMount() {
+
     axios
-      .get('https://api.github.com/users/eddiemadrigal')
-      .then(res => {
-        this.setState({
-          users: res.data
-        });
-      })
-      .catch(err => console.log(err));
+    .get('https://api.github.com/users/eddiemadrigal')
+    .then(res => {
+      this.setState({
+        users: res.data
+      });
+    })
+    .catch(err => console.log(err));
+
+    axios
+        .get(`https://api.github.com/users/eddiemadrigal/followers`)
+        .then(res => {
+          this.setState({
+            followers: res.data
+          });
+        })
+        .catch(err => console.log(err));
+
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.users !== this.state.users) {
       console.log('new users array');
-      if (this.state.searchText === 'chihuahua') {
+      if (this.state.searchText !== '') {
         console.log(this.state.searchText);
+
         axios
-          .get('https://api.github.com/users/eddiemadrigal')
-          .then(res => {
-            this.setState({
-              users: res.data.message,
-              searchText: 'husky'
-            });
-          })
-          .catch(err => console.log(err.message));
+        .get(`https://api.github.com/users/${this.state.searchText}`)
+        .then(res => {
+          this.setState({
+            users: res.data
+          });
+        })
+        .catch(err => console.log(err.message));
+
+        axios
+        .get(`https://api.github.com/users/${this.state.searchText}/followers`)
+        .then(res => {
+          this.setState({
+            followers: res.data
+          });
+        })
+        .catch(err => console.log(err));
       }
     }
   }
@@ -50,6 +70,7 @@ class App extends React.Component {
   };
 
   fetchUsers = e => {
+
     e.preventDefault();
     axios
       .get(`https://api.github.com/users/${this.state.searchText}`)
@@ -59,6 +80,16 @@ class App extends React.Component {
         });
       })
       .catch(err => console.log(err));
+
+      axios
+      .get(`https://api.github.com/users/${this.state.searchText}/followers`)
+      .then(res => {
+        this.setState({
+          followers: res.data
+        });
+      })
+      .catch(err => console.log(err));
+
   };
 
   render() {
